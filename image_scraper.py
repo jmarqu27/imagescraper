@@ -7,6 +7,7 @@ def create_dir(images):
     Get user input for a new directory for the images to be downloaded 
     to, then call the download_images function.
     """
+    # TODO: Get outfile directory from user
 
     # Create the new directory
     try:
@@ -78,6 +79,8 @@ def download_images(images, dir_name):
                 try:
                     r = str(r, 'utf-8')
                 except UnicodeDecodeError:
+                    # TODO: Adjust filename to remove characters after its file extention (i.e. .jpg, .png, etc)
+                    # TODO: Save images to output directory provided in create_dir function
                     with open(f"{dir_name}/{filename}", "wb+") as f:
                         f.write(r)
                     counter += 1
