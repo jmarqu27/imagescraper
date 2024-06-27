@@ -27,34 +27,46 @@ def download_images(images, dir_name):
     then downloads all images in the webage.
     """
 
+    # Counter for number of actual images downloaded
     counter = 0
+    filename = ""
 
     # Check if there are images to download
     if len(images) > 0:
         for i, image in enumerate(images):
             try:
                 image_url = image["src"]
+                filename = image_url.rsplit('/', 1)[-1]
                 print(image_url)
+                print(filename)
                 print()
             except:
                 try:
                     image_url = image["data-src"]
+                    filename = image_url.rsplit('/', 1)[-1]
                     print(image_url)
+                    print(filename)
                     print()
                 except:
                     try:
                         image_url = image["data-srcset"]
+                        filename = image_url.rsplit('/', 1)[-1]
                         print(image_url)
+                        print(filename)
                         print()
                     except:
                         try:
                             image_url = image["data-original"]
+                            filename = image_url.rsplit('/', 1)[-1]
                             print(image_url)
+                            print(filename)
                             print()
                         except:
                             try:
                                 image_url = image["data-fallback-src"]
+                                filename = image_url.rsplit('/', 1)[-1]
                                 print(image_url)
+                                print(filename)
                                 print()
                             except:
                                 pass
@@ -66,15 +78,14 @@ def download_images(images, dir_name):
                 try:
                     r = str(r, 'utf-8')
                 except UnicodeDecodeError:
-                    with open(f"{dir_name}/images{i+1}.jpg", "wb+") as f:
+                    with open(f"{dir_name}/{filename}", "wb+") as f:
                         f.write(r)
                     counter += 1
             except:
                 pass
-
+        
+        # Summary of total images downloaded / total images found on page
         print(f"{counter}/{len(images)} images downloaded")
-
-
 
 
 # Get URL from user
@@ -90,6 +101,6 @@ soup = BeautifulSoup(webpage, "html.parser")
 # Find all img tags on the webpage
 images = soup.find_all("img")
 # Print the list of img tags for visual
-#print(images)
+# print(images)
 
 create_dir(images)
