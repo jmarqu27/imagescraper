@@ -4,8 +4,8 @@ import os
 
 def create_dir(images):
     """
-    This function gets user input for a new directory for the images
-    to be downloaded to, then calls the download_images function
+    Get user input for a new directory for the images to be downloaded 
+    to, then call the download_images function.
     """
 
     # Create the new directory
@@ -22,7 +22,59 @@ def create_dir(images):
 
 
 def download_images(images, dir_name):
-    pass
+    """
+    Look for different type of HTML img source attributes, 
+    then downloads all images in the webage.
+    """
+
+    counter = 0
+
+    # Check if there are images to download
+    if len(images) > 0:
+        for i, image in enumerate(images):
+            try:
+                image_url = image["src"]
+                print(image_url)
+                print()
+            except:
+                try:
+                    image_url = image["data-src"]
+                    print(image_url)
+                    print()
+                except:
+                    try:
+                        image_url = image["data-srcset"]
+                        print(image_url)
+                        print()
+                    except:
+                        try:
+                            image_url = image["data-original"]
+                            print(image_url)
+                            print()
+                        except:
+                            try:
+                                image_url = image["data-fallback-src"]
+                                print(image_url)
+                                print()
+                            except:
+                                pass
+            
+            # Get image content
+            try:
+                r = requests.get(image_url).content
+
+                try:
+                    r = str(r, 'utf-8')
+                except UnicodeDecodeError:
+                    with open(f"{dir_name}/images{i+1}.jpg", "wb+") as f:
+                        f.write(r)
+                    counter += 1
+            except:
+                pass
+
+        print(f"{counter}/{len(images)} images downloaded")
+
+
 
 
 # Get URL from user
