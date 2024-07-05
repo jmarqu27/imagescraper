@@ -7,12 +7,11 @@ def create_dir(images):
     Get user input for a new directory for the images to be downloaded 
     to, then call the download_images function.
     """
-    # TODO: Get outfile directory from user
-
-    # Create the new directory
+  
+    # Create the new directory for output
     try:
-        # Get new directory name from user
-        dir_name = input("Enter the NEW directory: ")
+        # Get new directory name or from user
+        dir_name = input("Enter a the output directory: ")
         os.mkdir(dir_name)
     except:
         print("Directory already exists")
@@ -37,37 +36,67 @@ def download_images(images, dir_name):
         for i, image in enumerate(images):
             try:
                 image_url = image["src"]
-                filename = image_url.rsplit('/', 1)[-1]
                 print(image_url)
+                url_path = image_url.rsplit('/', 1)[0]
+                filename = image_url.rsplit('/', 1)[1]
+                print(url_path)
                 print(filename)
+                url_split = os.path.basename(image_url).partition("?")[0]
+                image_url = url_path + '/' + url_split
+                print(image_url)
+                print(url_split)
                 print()
             except:
                 try:
                     image_url = image["data-src"]
-                    filename = image_url.rsplit('/', 1)[-1]
                     print(image_url)
+                    url_path = image_url.rsplit('/', 1)[0]
+                    filename = image_url.rsplit('/', 1)[1]
+                    print(url_path)
                     print(filename)
+                    url_split = os.path.basename(image_url).partition("?")[0]
+                    image_url = url_path + '/' + url_split
+                    print(image_url)
+                    print(url_split)
                     print()
                 except:
                     try:
                         image_url = image["data-srcset"]
-                        filename = image_url.rsplit('/', 1)[-1]
                         print(image_url)
+                        url_path = image_url.rsplit('/', 1)[0]
+                        filename = image_url.rsplit('/', 1)[1]
+                        print(url_path)
                         print(filename)
+                        url_split = os.path.basename(image_url).partition("?")[0]
+                        image_url = url_path + '/' + url_split
+                        print(image_url)
+                        print(url_split)
                         print()
                     except:
                         try:
                             image_url = image["data-original"]
-                            filename = image_url.rsplit('/', 1)[-1]
                             print(image_url)
+                            url_path = image_url.rsplit('/', 1)[0]
+                            filename = image_url.rsplit('/', 1)[1]
+                            print(url_path)
                             print(filename)
+                            url_split = os.path.basename(image_url).partition("?")[0]
+                            image_url = url_path + '/' + url_split
+                            print(image_url)
+                            print(url_split)
                             print()
                         except:
                             try:
                                 image_url = image["data-fallback-src"]
-                                filename = image_url.rsplit('/', 1)[-1]
                                 print(image_url)
+                                url_path = image_url.rsplit('/', 1)[0]
+                                filename = image_url.rsplit('/', 1)[1]
+                                print(url_path)
                                 print(filename)
+                                url_split = os.path.basename(image_url).partition("?")[0]
+                                image_url = url_path + '/' + url_split
+                                print(image_url)
+                                print(url_split)
                                 print()
                             except:
                                 pass
@@ -79,9 +108,8 @@ def download_images(images, dir_name):
                 try:
                     r = str(r, 'utf-8')
                 except UnicodeDecodeError:
-                    # TODO: Adjust filename to remove characters after its file extention (i.e. .jpg, .png, etc)
-                    # TODO: Save images to output directory provided in create_dir function
-                    with open(f"{dir_name}/{filename}", "wb+") as f:
+                    # TODO: Write files with filename vs current  generic 'imagex'
+                    with open(f"{dir_name}/image{i+1}.jpg", "wb+") as f:
                         f.write(r)
                     counter += 1
             except:
