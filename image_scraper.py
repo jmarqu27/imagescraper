@@ -11,7 +11,7 @@ def create_dir(images):
     # Create the new directory for output
     try:
         # Get new directory name or from user
-        dir_name = input("Enter a the output directory: ")
+        dir_name = input("Enter a NEW output directory: ")
         os.mkdir(dir_name)
     except:
         print("Directory already exists")
@@ -19,6 +19,12 @@ def create_dir(images):
     
     # Function call to start downloading images
     download_images(images, dir_name)
+
+
+# TODO: Refactor image parsing into a function
+
+def parse_image():
+    pass
 
 
 def download_images(images, dir_name):
@@ -37,66 +43,59 @@ def download_images(images, dir_name):
             try:
                 image_url = image["src"]
                 print(image_url)
+                # Gets the URL path before the filename
                 url_path = image_url.rsplit('/', 1)[0]
-                filename = image_url.rsplit('/', 1)[1]
                 print(url_path)
-                print(filename)
-                url_split = os.path.basename(image_url).partition("?")[0]
-                image_url = url_path + '/' + url_split
+                # Removes '?' and everything after the filename extension
+                filename = os.path.basename(image_url).partition("?")[0]
+                # Combines URL path and filename
+                image_url = url_path + '/' + filename
                 print(image_url)
-                print(url_split)
+                print(filename)
                 print()
             except:
                 try:
                     image_url = image["data-src"]
                     print(image_url)
                     url_path = image_url.rsplit('/', 1)[0]
-                    filename = image_url.rsplit('/', 1)[1]
                     print(url_path)
-                    print(filename)
-                    url_split = os.path.basename(image_url).partition("?")[0]
-                    image_url = url_path + '/' + url_split
+                    filename = os.path.basename(image_url).partition("?")[0]
+                    image_url = url_path + '/' + filename
                     print(image_url)
-                    print(url_split)
+                    print(filename)
                     print()
                 except:
                     try:
                         image_url = image["data-srcset"]
                         print(image_url)
                         url_path = image_url.rsplit('/', 1)[0]
-                        filename = image_url.rsplit('/', 1)[1]
                         print(url_path)
-                        print(filename)
-                        url_split = os.path.basename(image_url).partition("?")[0]
-                        image_url = url_path + '/' + url_split
+                        filename = os.path.basename(image_url).partition("?")[0]
+                        image_url = url_path + '/' + filename
                         print(image_url)
-                        print(url_split)
+                        print(filename)
                         print()
                     except:
                         try:
                             image_url = image["data-original"]
                             print(image_url)
                             url_path = image_url.rsplit('/', 1)[0]
-                            filename = image_url.rsplit('/', 1)[1]
                             print(url_path)
-                            print(filename)
-                            url_split = os.path.basename(image_url).partition("?")[0]
-                            image_url = url_path + '/' + url_split
+                            filename = os.path.basename(image_url).partition("?")[0]
+                            image_url = url_path + '/' + filename
                             print(image_url)
-                            print(url_split)
+                            print(filename)
                             print()
                         except:
                             try:
                                 image_url = image["data-fallback-src"]
                                 print(image_url)
                                 url_path = image_url.rsplit('/', 1)[0]
-                                filename = image_url.rsplit('/', 1)[1]
                                 print(url_path)
-                                print(filename)
-                                url_split = os.path.basename(image_url).partition("?")[0]
-                                image_url = url_path + '/' + url_split
+                                filename = os.path.basename(image_url).partition("?")[0]
+                                image_url = url_path + '/' + filename
                                 print(image_url)
-                                print(url_split)
+                                print(filename)
                                 print()
                             except:
                                 pass
@@ -108,14 +107,14 @@ def download_images(images, dir_name):
                 try:
                     r = str(r, 'utf-8')
                 except UnicodeDecodeError:
-                    # TODO: Write files with filename vs current  generic 'imagex'
-                    with open(f"{dir_name}/image{i+1}.jpg", "wb+") as f:
+                    with open(f"{dir_name}/{filename}", "wb+") as f:
                         f.write(r)
+                    # Counter for total number of images actually downloaded
                     counter += 1
             except:
                 pass
         
-        # Summary of total images downloaded / total images found on page
+        # Summary of total images actually downloaded / total images found on page
         print(f"{counter}/{len(images)} images downloaded")
 
 
