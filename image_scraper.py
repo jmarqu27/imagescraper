@@ -11,7 +11,7 @@ def create_dir(images):
     # Create the new directory for output
     try:
         # Get new directory name or from user
-        dir_name = input("Enter a NEW output directory: ")
+        dir_name = input("Enter the output directory: ")
         os.mkdir(dir_name)
     except:
         print("Directory already exists")
@@ -21,10 +21,22 @@ def create_dir(images):
     download_images(images, dir_name)
 
 
-# TODO: Refactor image parsing into a function
 
-def parse_image():
-    pass
+def parse_image(original_image_url):
+    print(original_image_url)
+    # Gets the URL path before the filename
+    url_path = original_image_url.rsplit('/', 1)[0]
+    print(url_path)
+    # Removes '?' and everything after the filename extension
+    filename = os.path.basename(original_image_url).partition("?")[0]
+    # Combines URL path and filename
+    new_image_url = url_path + '/' + filename
+    print(new_image_url)
+    print(filename)
+    print()
+
+    return new_image_url, filename
+
 
 
 def download_images(images, dir_name):
@@ -42,67 +54,29 @@ def download_images(images, dir_name):
         for i, image in enumerate(images):
             try:
                 image_url = image["src"]
-                print(image_url)
-                # Gets the URL path before the filename
-                url_path = image_url.rsplit('/', 1)[0]
-                print(url_path)
-                # Removes '?' and everything after the filename extension
-                filename = os.path.basename(image_url).partition("?")[0]
-                # Combines URL path and filename
-                image_url = url_path + '/' + filename
-                print(image_url)
-                print(filename)
-                print()
+                new_image_url, filename = parse_image(image_url)
             except:
                 try:
                     image_url = image["data-src"]
-                    print(image_url)
-                    url_path = image_url.rsplit('/', 1)[0]
-                    print(url_path)
-                    filename = os.path.basename(image_url).partition("?")[0]
-                    image_url = url_path + '/' + filename
-                    print(image_url)
-                    print(filename)
-                    print()
+                    new_image_url, filename = parse_image(image_url)
                 except:
                     try:
                         image_url = image["data-srcset"]
-                        print(image_url)
-                        url_path = image_url.rsplit('/', 1)[0]
-                        print(url_path)
-                        filename = os.path.basename(image_url).partition("?")[0]
-                        image_url = url_path + '/' + filename
-                        print(image_url)
-                        print(filename)
-                        print()
+                        new_image_url, filename = parse_image(image_url)
                     except:
                         try:
                             image_url = image["data-original"]
-                            print(image_url)
-                            url_path = image_url.rsplit('/', 1)[0]
-                            print(url_path)
-                            filename = os.path.basename(image_url).partition("?")[0]
-                            image_url = url_path + '/' + filename
-                            print(image_url)
-                            print(filename)
-                            print()
+                            new_image_url, filename = parse_image(image_url)
                         except:
                             try:
                                 image_url = image["data-fallback-src"]
-                                print(image_url)
-                                url_path = image_url.rsplit('/', 1)[0]
-                                print(url_path)
-                                filename = os.path.basename(image_url).partition("?")[0]
-                                image_url = url_path + '/' + filename
-                                print(image_url)
-                                print(filename)
-                                print()
+                                new_image_url, filename = parse_image(image_url)
                             except:
                                 pass
             
             # Get image content
             try:
-                r = requests.get(image_url).content
+                r = requests.get(new_image_url).content
 
                 try:
                     r = str(r, 'utf-8')
