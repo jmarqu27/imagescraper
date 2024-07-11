@@ -41,8 +41,9 @@ def parse_image(original_image_url):
 
 def download_images(images, dir_name):
     """
-    Look for different type of HTML img source attributes, 
-    then downloads all images in the webage.
+    Looks for different types of HTML img source attributes, parses
+    the URL using parse_image() function, then downloads all images
+    in the webpage.
     """
 
     # Counter for number of actual images downloaded
