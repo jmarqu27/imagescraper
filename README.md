@@ -22,10 +22,10 @@ wish to download the images from.
 directory. This is the directory you want the downloaded images
 to be saved.
 This should be a new directory.
-Example: "C:\Users\[user]\Images\MyNewDir"
+Example: "C:\Users\\[user]\Images\MyNewDir"
 
 ## Technologies
 This project uses Python with the following modules:
 * BeautifulSoup
-* OS
+* os
 * requests
